@@ -1,0 +1,18 @@
+# Query to count number of Geonames IDs in New Zealand Wikidata items
+SELECT ?place ?placeLabel (COUNT(?gnid) AS ?geonames_ids)
+WHERE {
+  ?place wdt:P17 wd:Q664;
+         wdt:P1566 ?gnid 
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
+  }
+GROUP BY ?place ?placeLabel
+ORDER BY DESC(?geonames_ids)
+
+# New Zealand places with coordinates referenced to Cebuano Wikipedia
+SELECT ?place ?placeLabel ?placeDescription ?coords
+WHERE {
+  ?place wdt:P17 wd:Q664 .
+  ?place p:P625 [ps:P625 ?coords;
+    prov:wasDerivedFrom [pr:P143 wd:Q837615]]
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+  }
